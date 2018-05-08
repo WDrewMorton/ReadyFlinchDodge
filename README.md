@@ -1,19 +1,25 @@
-Welcome to the README for this application.
-
-The original below idea was originally discussed with Nick.
-
-This game will be a mobile fighting game.
+# Ready Flinch Dodge
+'
+The Ready Flinch Dodge proof of concept is complete. This game will be a mobile fighting game.
 Either:
 	1 v 1
 	2 v 2
 
 Turn based but 3 abilities at a time instead of 1
+'
+## Authours:
+Drew & Nick
 
-The python file game.py is more of a proof of concept for the game. 
 
-This game will need the following before it is complete.
-1) A more developed plan of actions
-2) Decide on GUI framework & design
-3) Integration with a mobile device & desktop
-   a) Online Website and/or DB
-   b) Only for local play using Device Discovery
+### Key:
+* TODO - action item needs to be completed for some reason
+* --Exception - The code works but has this exception that needs to be fixed
+* NOTE - typically used before code that is only for testing purposes but may not be.
+
+## Project TODO:
+* Design and the end goal needs to be ironed out.
+* Local VS Global play
+	* Local - Discovery Service
+		* Integrate with adroid & apple products
+	* Global - Online site with a database for managing users
+* Mobile GUI with Python
