@@ -1,3 +1,5 @@
+'''
+.txt file didn't show up on Git Hub
 05/08/18
 
 Attack Notes
@@ -47,5 +49,4 @@ Action Items going forward
 * Add History
 * Add AI/Tutorial
 - Run game over and over
-
-test
+'''
