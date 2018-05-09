@@ -1,0 +1,49 @@
+05/08/18
+
+Attack Notes
+*attack = attack: faster attack damages first
+*attack < dodge: attacker loses initiative (goes second) and dodged takes no damage
+*attack > yelling: yeller takes damage, attacker takes none
+
+*dodge = dodge: No damage or change in speed
+*dodge < yelling: Dodger takes damage from yeller
+*dodge > attack: attacker loses initiative (goes second) and dodged takes no damage
+Both players dodge for all actions for 1|2 rounds in a row then apply status/damage to each player for one round
+
+*yelling = yelling: Yelling slightly damages each player (half damage) 
+*yelling < attack: yeller takes damage, attacker takes none
+*yelling > dodge: Dodger takes damage from yeller
+
+
+Features
+* Special Abilities - Based on a meter that gradually grows as per action used per round. Special ability may be used once the bar is full and refills after it is depleted.
+* Speed Adv / Initiative - Strategy measure
+* Show opponents actions of the last round
+- Add drop down to see all history of the opponent for each round 
+
+End Goal Design
+- Local VS Global play
+* Local - Discovery Service
+* Integrate with adroid & apple products
+- Global - Online site with a database for managing users
+
+Languages & Software
+Mobile GUI using Kivy or Unity 
+Languages Python or C#
+
+Animation
+* Health
+* Actions and make it flashy
+
+Tutorial
+- Show what happens in each ability situation.
+- Fight an AI 
+
+Action Items going forward
+* Add Attack Items - COMPLETE
+# Exception - if choose all same values for both players it thinks it catches Attack V Attack / Dodge V Dodge / Yell V Yell
+* Add Dodge 3 time revoke action next round - Confidence Broken commented out.
+* Add Speed - COMPLETE
+* Add History
+* Add AI/Tutorial
+- Run game over and over
