@@ -18,12 +18,15 @@ NOTE - typically used before code that is only for testing purposes but may not 
 '''
 import random
 
-# Start Game method 
+# Start Game method will 
 def start_game():
 	name1 = input("What is first player's name? \n")
+#	print("\n")
 	name2 = input("\nWhat is second player's name? \n")
 	health = 100
-
+	# tickle/melee, flinch/dodge, backhand/counter buff, scream/debuff
+	#actions1 = ["tickle", "flinch", "backhand", "scream"]
+	#actions2 = ["flick", "blink", "shrug", "flex"]
 	
 	# Actions will be standardized and we may introduce swapping abilities in the future
 	actions = ["Attack", "Dodge", "Yell"]
@@ -31,6 +34,9 @@ def start_game():
 	p1 = make_player(name1, health, actions, Player.speed)
 	p2 = make_player(name2, health, actions, Player.speed)
 	
+	#p1 = make_player(name1, Player.health, Player.actions, Player.speed, Player.confident)
+	#p2 = make_player(name2, Player.health, Player.actions, Player.speed, Player.confident)
+
 	print("\n########################################")
 	print_player(p1)
 	print("########################################")
@@ -48,16 +54,36 @@ def begin_fight(p1, p2):
 	#confidence_list = [1,1,1]
 	#print(confidence_list)
 
-	# While both players are alive with 1 health or more.
+	# While both players are alive
 	# --Exception: If a player dies mid round
-	while p1.health >= 1 and p2.health >= 1:
+	while p1.health >= 1 and p2.health > 1:
 		print("Begin round:{}".format(gameRound))
 		print("--------------------------------------")
 
 		# TODO: COMPLETE make separate function to assign actions per round
+		#p1Actions = choose_actions(p1, p1.confident)
 		p1Actions = choose_actions(p1)
+		#print("{}\n".format(p1Actions))
 		p2Actions = choose_actions(p2)
+		#p2Actions = choose_actions(p2, p2.confident)
+		
+		#print("{}".format(p2Actions))
 
+		# TODO: Review best place for checking confidence_list may need to be moved to another function.
+		# TODO: Confidence isn't working
+		'''
+		if str(p1Actions) == str(confidence_list):
+			p1.confident = True
+		else:
+			p1.confident = False
+		if str(p2Actions) == str(confidence_list):
+			p2.confident = True
+		else:
+			p2.confidence =  False
+		
+		print(p1.confident)
+		print(p2.confident)
+		'''
 		p1AttackList = []
 		p2AttackList = []
 		for x in p1Actions:
@@ -86,6 +112,16 @@ def begin_fight(p1, p2):
 # --Exception: Allows user to pick outside of action range 
 #def choose_actions(player, confident):
 def choose_actions(player):
+	'''
+	TODO: Confidence not working
+	temp_action_list = []
+	if confident:
+		#HARDCODED 0 & 2 to represent not using Dodge
+		temp_action_list = [0,2]
+		print("You are feeling confident and can't dodge this round.")
+	else:
+		temp_action_list = player.actions
+	'''
 
 	# Re-format action list in format ACTION:EXPECTED INPUT
 	formtActionList = []
@@ -93,6 +129,7 @@ def choose_actions(player):
 		formtActionList.append("{}|{}".format(i,player.actions.index(i)))
 
 	print("{} choose 3 of your listed actions: {}\n".format(player.name, ', '.join(formtActionList)))
+	#print("{} choose 3 of your listed actions: {}\n".format(player.name, ', '.join(player.actions)))
 	print("Select your action via the position. First postition is 0.")
 
 	# Choose your attacks via # input & store in list
@@ -102,6 +139,14 @@ def choose_actions(player):
 		response = valid_input(temp, player.actions)
 		attack.append(response)
 	print(attack)
+	
+	'''
+	# NOTE: Unsure whether to print the chosen actions here or in begin fight.
+	attackList = []
+	for x in attack:
+		attackList.append(player.actions[x])
+	print("Current attack list: {}".format(', '.join(attackList)))
+	'''
 
 	return attack
 
@@ -122,6 +167,47 @@ def valid_input(response, l):
 # If the difference between the two actions is 1 then action with greater value won
 # --Exception: to the above: beginning w/ end scenario not covered. EX: Rock & Scissors
 #   would result in nothing happening.
+'''
+def compare_actions(p1, attack1, p2, attack2):
+	# For loop for 
+	for x in range((len(attack1) - 1)):
+		# If both players choose an action at opposite ends (Rock & Scissors)
+		# Possibly try absolute value of attack1[x] - attack[2] == len(p1.actions)
+		# must assume both sets of actions are the same length
+		#if (attack1[x] == 0 or attack1[x] == (len(p1.actions) - 1)) and (attack2[x] == 0 or attack2[x] == (len(p2.actions) - 1)):
+		if abs(int(attack1[x]) - int(attack2[x])) == (len(p1.actions) - 1):
+			# Player that has 0 wins using RPS logic mentioned above.
+			if attack1[x] == 0:
+				print("Player 1 damaged Player 2")
+				p2.health -= 25
+				#Test
+				print("Player 2 health: {}".format(p2.health))
+			else:
+				print("Player 2 damaged Player 1")
+				p1.health -= 25
+				print("Player 1 health: {}".format(p1.health))
+
+		elif attack1[x] > attack2[x]:
+			r = attack1[x] - attack2[x] 
+			if r == 1:
+				print("Player 1 damaged Player 2")
+				p2.health -= 25
+				#Test
+				print("Player 2 health: {}".format(p2.health))
+			else:
+				print("Woosh, nothing happens")
+		elif attack1[x] < attack2[x]:
+			r = attack2[x] - attack1[x] 
+			if r == 1:
+				print("Player 2 damaged Player 1")
+				p1.health -= 25
+				print("Player 1 health: {}".format(p1.health))
+			else:
+				print("Phew, nothing happens")
+		else:
+			# Both values are the same
+			print("Draw")
+'''
 # Compare Actions 2 follows the logic discussed in meeting notes
 def compare_actions2(p1, attack1, p2, attack2):
 	# For loop for the range of the list of attacks assuming both are the same length.
@@ -178,12 +264,16 @@ class Player(object):
     confident = False
 
     # Initializer 
+    #def __init__(self, name, health, actions, speed, confident):
     def __init__(self, name, health, actions, speed):
         self.name = name
         self.health = health
         self.actions = actions
         self.speed = speed
+#        self.confident = confident
 
+#def make_player(name, health, actions, speed, confident):
+#    player = Player(name, health, actions, speed, confident)
 def make_player(name, health, actions, speed):
     player = Player(name, health, actions, speed)
     return player
