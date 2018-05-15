@@ -38,9 +38,27 @@ def list_to_list():
 		result.append("{} :{}".format(i,l3.index(i)))
 	print("{}".format(result))
 
-# input_exception()
-list_to_list()
+def list_functions():
+	name1 = "Drew"
+	name2 = "Nick"
+	lastList = []
+	fullList1 = []
+	fullList2 = []
+	l1 = [0,1,2]
+	l2 = [2,1,2]
+	lastList = l1 + l2
+	print("Last Round Player 1 chose {} Player 2 chose {}".format(l1,l2))
 
+	for x in range(5):
+		fullList1.append("Round {}: Player {} chose {}\n".format(x, name1, l1))
+
+	for x in fullList1:
+		print(x)
+		#print("{}".format(str(fullList1[x])))
+
+# input_exception()
+#list_to_list()
+list_functions()
 
 '''
 README.md Text

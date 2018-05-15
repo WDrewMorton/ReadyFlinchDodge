@@ -46,6 +46,8 @@ def begin_fight(p1, p2):
 
 	#TODO: Review best place for checking confidence_list may need to be moved to another function.
 	confidence_list = [1,1,1]
+	full_game_list1 = []
+	full_game_list2 = []
 
 	# Coin is a variable that decides who has speed at beginning of the fight 
 	coin = random.randint(0, 1)
@@ -54,16 +56,21 @@ def begin_fight(p1, p2):
 	else:
 		p2.speed = True
 
+	if p1.speed == True:
+		print("Player {} begins the fight with a speedy advantage".format(p1.name))
+	else:
+		print("Player {} begins the fight with a speedy advantage".format(p2.name))
+
 	# While both players are alive with 1 health or more.
 	# --Exception: If a player dies mid round
 	while p1.health >= 1 and p2.health >= 1:
 		print("Begin round:{}".format(gameRound))
 		print("--------------------------------------")
 
-		if p1.speed == True:
-			print("Player {} begins the fight with a speedy advantage".format(p1.name))
-		else:
-			print("Player {} begins the fight with a speedy advantage".format(p2.name))
+		if gameRound > 1:
+			print("\n<><><><><><><><><><><<><><><><><><><><><><><><><><><><><><><><>")
+			print("Last Round: \nPlayer 1 chose {} \nPlayer 2 chose {}".format(p1Actions, p2Actions))
+			print("<><><><><><><><><><><<><><><><><><><><><><><><><><><><><><><><>\n")
 
 		# TODO: COMPLETE make separate function to assign actions per round
 		p1Actions = choose_actions(p1)
@@ -88,16 +95,22 @@ def begin_fight(p1, p2):
 		print("\n{} will use {}".format(p1.name,', '.join(p1AttackList)))
 		print("\n{} will use {}\n".format(p2.name,', '.join(p2AttackList)))
 
-
-		# HARDCODE: Set P1 to have speed in the very beginning
-		p1.speed = True
-
 		compare_actions2(p1, p1Actions, p2, p2Actions)
 
 		print("Players health 1:{} 2:{}".format(p1.health, p2.health))
 
+		full_game_list1.append("Round {}: Player {} chose {}\n".format(gameRound, p1.name, p1Actions))
+		full_game_list2.append("Round {}: Player {} chose {}\n".format(gameRound, p2.name, p2Actions))
+		
 		gameRound += 1
-
+	
+	print("\nGAME OVER! \nFor historical records:\n")
+	print("Player {} history".format(p1.name))
+	for x in full_game_list1:
+		print(x)
+	print("\nPlayer {} history".format(p2.name))
+	for x in full_game_list2:
+		print(x)
 
 # choose_actions - Prompts player to choose their 3 actions
 # TODO: Allow user to click a button, enter string, and/or all 3 actions on one line. 
