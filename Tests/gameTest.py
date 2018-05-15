@@ -31,11 +31,11 @@ def start_game():
 	# Actions will be standardized and we may introduce swapping abilities in the future
 	actions = ["Attack", "Dodge", "Yell"]
 
-	p1 = make_player(name1, health, actions, Player.speed)
-	p2 = make_player(name2, health, actions, Player.speed)
+	#p1 = make_player(name1, health, actions, Player.speed)
+	#p2 = make_player(name2, health, actions, Player.speed)
 	
-	#p1 = make_player(name1, Player.health, Player.actions, Player.speed, Player.confident)
-	#p2 = make_player(name2, Player.health, Player.actions, Player.speed, Player.confident)
+	p1 = make_player(name1, Player.health, Player.actions, Player.speed, Player.confident)
+	p2 = make_player(name2, Player.health, Player.actions, Player.speed, Player.confident)
 
 	print("\n########################################")
 	print_player(p1)
@@ -51,27 +51,41 @@ def begin_fight(p1, p2):
 	gameRound = 1
 
 	#TODO: Review best place for checking confidence_list may need to be moved to another function.
-	#confidence_list = [1,1,1]
-	#print(confidence_list)
+	confidence_list = [1,1,1]
+	print(confidence_list)
+
+	# Coin is a variable that decides who has speed at beginning of the fight 
+	coin = random.randint(0, 1)
+	if coin == 0:
+		p1.speed = True
+	else:
+		p2.speed = True
+	#print(p1.speed)
+	#print(p2.speed)
 
 	# While both players are alive
 	# --Exception: If a player dies mid round
-	while p1.health >= 1 and p2.health > 1:
+	while p1.health >= 1 and p2.health >= 1:
 		print("Begin round:{}".format(gameRound))
 		print("--------------------------------------")
 
+		if p1.speed == True:
+			print("Player {} begins the fight with a speedy advantage".format(p1.name))
+		else:
+			print("Player {} begins the fight with a speedy advantage".format(p2.name))
+
 		# TODO: COMPLETE make separate function to assign actions per round
-		#p1Actions = choose_actions(p1, p1.confident)
+		#p1Actions = choose_actions(p1.actions, p1.confident)
 		p1Actions = choose_actions(p1)
 		#print("{}\n".format(p1Actions))
 		p2Actions = choose_actions(p2)
-		#p2Actions = choose_actions(p2, p2.confident)
+		#p2Actions = choose_actions(p2.actions, p2.confident)
 		
 		#print("{}".format(p2Actions))
 
 		# TODO: Review best place for checking confidence_list may need to be moved to another function.
 		# TODO: Confidence isn't working
-		'''
+		
 		if str(p1Actions) == str(confidence_list):
 			p1.confident = True
 		else:
@@ -81,9 +95,9 @@ def begin_fight(p1, p2):
 		else:
 			p2.confidence =  False
 		
-		print(p1.confident)
-		print(p2.confident)
-		'''
+		print("Is player 1 confident? {}".format(p1.confident))
+		print("Is player 2 confident? {}".format(p2.confident))
+		
 		p1AttackList = []
 		p2AttackList = []
 		for x in p1Actions:
@@ -93,16 +107,13 @@ def begin_fight(p1, p2):
 		print("\n{} will use {}".format(p1.name,', '.join(p1AttackList)))
 		print("\n{} will use {}\n".format(p2.name,', '.join(p2AttackList)))
 
-
-		# HARDCODE: Set P1 to have speed in the very beginning
-		p1.speed = True
-
 		compare_actions2(p1, p1Actions, p2, p2Actions)
 
 		print("Players health 1:{} 2:{}".format(p1.health, p2.health))
 		
-		p1.confident = False
-		p2.confident = False
+		# Why the fuck am I hard coding it at the end???
+		#p1.confident = False
+		#p2.confident = False
 
 		gameRound += 1
 
@@ -110,12 +121,19 @@ def begin_fight(p1, p2):
 # choose_actions - Prompts player to choose their 3 actions
 # TODO: Allow user to click a button, enter string, and/or all 3 actions on one line. 
 # --Exception: Allows user to pick outside of action range 
+
 #def choose_actions(player, confident):
 def choose_actions(player):
+	
+	#TODO: Confidence not working
+	#TODO: Instead of changing the options that are allowed, just set validity to False if Confident and choice is 0.
+	# Testing print
+	#print("Is player {} confident {}".format(player.name, player.confident))
+	
 	'''
-	TODO: Confidence not working
+	temp_action_list not used
 	temp_action_list = []
-	if confident:
+	if player.confident == True:
 		#HARDCODED 0 & 2 to represent not using Dodge
 		temp_action_list = [0,2]
 		print("You are feeling confident and can't dodge this round.")
@@ -133,29 +151,29 @@ def choose_actions(player):
 	print("Select your action via the position. First postition is 0.")
 
 	# Choose your attacks via # input & store in list
+	# This needs to be hardcoded to loop 3 times. If confident then will not allow 3 actions
 	attack = []
 	for x in range(len(player.actions)):
+	#for x in range(3):
 		temp = int(input("Action : "))
-		response = valid_input(temp, player.actions)
+		#response = valid_input(temp, temp_action_list)
+		response = valid_input(temp, player.actions, player.confident)
 		attack.append(response)
 	print(attack)
-	
-	'''
-	# NOTE: Unsure whether to print the chosen actions here or in begin fight.
-	attackList = []
-	for x in attack:
-		attackList.append(player.actions[x])
-	print("Current attack list: {}".format(', '.join(attackList)))
-	'''
 
 	return attack
 
 # valid_input - determines if the response given is a valid option in the given list.
-def valid_input(response, l):
+def valid_input(response, l, confident):
 	invalid = True
 	while invalid == True:
+		# This will not work due to Confident list being shorter
+
 		if response < 0 or response > (len(l) - 1):
 			print("You have chosen an invalid action.")
+			response = int(input("Action : "))
+		elif confident == True and response == 1:
+			print("You are too confident to defend! Choose another action.")
 			response = int(input("Action : "))
 		else:
 			invalid = False
@@ -167,47 +185,7 @@ def valid_input(response, l):
 # If the difference between the two actions is 1 then action with greater value won
 # --Exception: to the above: beginning w/ end scenario not covered. EX: Rock & Scissors
 #   would result in nothing happening.
-'''
-def compare_actions(p1, attack1, p2, attack2):
-	# For loop for 
-	for x in range((len(attack1) - 1)):
-		# If both players choose an action at opposite ends (Rock & Scissors)
-		# Possibly try absolute value of attack1[x] - attack[2] == len(p1.actions)
-		# must assume both sets of actions are the same length
-		#if (attack1[x] == 0 or attack1[x] == (len(p1.actions) - 1)) and (attack2[x] == 0 or attack2[x] == (len(p2.actions) - 1)):
-		if abs(int(attack1[x]) - int(attack2[x])) == (len(p1.actions) - 1):
-			# Player that has 0 wins using RPS logic mentioned above.
-			if attack1[x] == 0:
-				print("Player 1 damaged Player 2")
-				p2.health -= 25
-				#Test
-				print("Player 2 health: {}".format(p2.health))
-			else:
-				print("Player 2 damaged Player 1")
-				p1.health -= 25
-				print("Player 1 health: {}".format(p1.health))
 
-		elif attack1[x] > attack2[x]:
-			r = attack1[x] - attack2[x] 
-			if r == 1:
-				print("Player 1 damaged Player 2")
-				p2.health -= 25
-				#Test
-				print("Player 2 health: {}".format(p2.health))
-			else:
-				print("Woosh, nothing happens")
-		elif attack1[x] < attack2[x]:
-			r = attack2[x] - attack1[x] 
-			if r == 1:
-				print("Player 2 damaged Player 1")
-				p1.health -= 25
-				print("Player 1 health: {}".format(p1.health))
-			else:
-				print("Phew, nothing happens")
-		else:
-			# Both values are the same
-			print("Draw")
-'''
 # Compare Actions 2 follows the logic discussed in meeting notes
 def compare_actions2(p1, attack1, p2, attack2):
 	# For loop for the range of the list of attacks assuming both are the same length.
@@ -219,7 +197,7 @@ def compare_actions2(p1, attack1, p2, attack2):
 					print("{} quickly attacks {} before they can move!".format(p1.name,p2.name)) 
 				else:
 					p1.health -= 20
-					print("{} quickly attacks {} before they can move!".format(p1.name,p2.name)) 
+					print("{} quickly attacks {} before they can move!".format(p2.name,p1.name)) 
 			elif attack1[x] == 1: # Dodge V Dodge
 				print("Both players stare at each other waiting for the other to move!")
 			else: # Yell & Yell
@@ -264,18 +242,18 @@ class Player(object):
     confident = False
 
     # Initializer 
-    #def __init__(self, name, health, actions, speed, confident):
-    def __init__(self, name, health, actions, speed):
+    def __init__(self, name, health, actions, speed, confident):
+    #def __init__(self, name, health, actions, speed):
         self.name = name
         self.health = health
         self.actions = actions
         self.speed = speed
-#        self.confident = confident
+        self.confident = confident
 
-#def make_player(name, health, actions, speed, confident):
-#    player = Player(name, health, actions, speed, confident)
-def make_player(name, health, actions, speed):
-    player = Player(name, health, actions, speed)
+def make_player(name, health, actions, speed, confident):
+    player = Player(name, health, actions, speed, confident)
+#def make_player(name, health, actions, speed):
+#    player = Player(name, health, actions, speed)
     return player
 
 def print_player(object):

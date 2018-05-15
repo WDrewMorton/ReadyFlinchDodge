@@ -1,7 +1,7 @@
 #!/usr/bin/python
 '''
 Created by Drew Morton & Nick McCarty
-Last Editted: 05/07/18
+Last Editted: 05/14/18
 
 This game will be a mobile fighting game.
 Either:
@@ -28,8 +28,8 @@ def start_game():
 	# Actions will be standardized and we may introduce swapping abilities in the future
 	actions = ["Attack", "Dodge", "Yell"]
 
-	p1 = make_player(name1, health, actions, Player.speed)
-	p2 = make_player(name2, health, actions, Player.speed)
+	p1 = make_player(name1, health, actions, Player.speed, Player.confident)
+	p2 = make_player(name2, health, actions, Player.speed, Player.confident)
 	
 	print("\n########################################")
 	print_player(p1)
@@ -45,8 +45,14 @@ def begin_fight(p1, p2):
 	gameRound = 1
 
 	#TODO: Review best place for checking confidence_list may need to be moved to another function.
-	#confidence_list = [1,1,1]
-	#print(confidence_list)
+	confidence_list = [1,1,1]
+
+	# Coin is a variable that decides who has speed at beginning of the fight 
+	coin = random.randint(0, 1)
+	if coin == 0:
+		p1.speed = True
+	else:
+		p2.speed = True
 
 	# While both players are alive with 1 health or more.
 	# --Exception: If a player dies mid round
@@ -54,9 +60,24 @@ def begin_fight(p1, p2):
 		print("Begin round:{}".format(gameRound))
 		print("--------------------------------------")
 
+		if p1.speed == True:
+			print("Player {} begins the fight with a speedy advantage".format(p1.name))
+		else:
+			print("Player {} begins the fight with a speedy advantage".format(p2.name))
+
 		# TODO: COMPLETE make separate function to assign actions per round
 		p1Actions = choose_actions(p1)
 		p2Actions = choose_actions(p2)
+
+		# Checks whether a player is confident
+		if str(p1Actions) == str(confidence_list):
+			p1.confident = True
+		else:
+			p1.confident = False
+		if str(p2Actions) == str(confidence_list):
+			p2.confident = True
+		else:
+			p2.confidence =  False
 
 		p1AttackList = []
 		p2AttackList = []
@@ -74,17 +95,13 @@ def begin_fight(p1, p2):
 		compare_actions2(p1, p1Actions, p2, p2Actions)
 
 		print("Players health 1:{} 2:{}".format(p1.health, p2.health))
-		
-		p1.confident = False
-		p2.confident = False
 
 		gameRound += 1
 
 
 # choose_actions - Prompts player to choose their 3 actions
 # TODO: Allow user to click a button, enter string, and/or all 3 actions on one line. 
-# --Exception: Allows user to pick outside of action range 
-#def choose_actions(player, confident):
+# --Exception: Allows user to pick non-# but only #'s in the list
 def choose_actions(player):
 
 	# Re-format action list in format ACTION:EXPECTED INPUT
@@ -99,18 +116,21 @@ def choose_actions(player):
 	attack = []
 	for x in range(len(player.actions)):
 		temp = int(input("Action : "))
-		response = valid_input(temp, player.actions)
+		response = valid_input(temp, player.actions, player.confident)
 		attack.append(response)
 	print(attack)
 
 	return attack
 
 # valid_input - determines if the response given is a valid option in the given list.
-def valid_input(response, l):
+def valid_input(response, l, confident):
 	invalid = True
 	while invalid == True:
 		if response < 0 or response > (len(l) - 1):
 			print("You have chosen an invalid action.")
+			response = int(input("Action : "))
+		elif confident == True and response == 1:
+			print("You are too confident to defend! Choose another action.")
 			response = int(input("Action : "))
 		else:
 			invalid = False
@@ -133,7 +153,7 @@ def compare_actions2(p1, attack1, p2, attack2):
 					print("{} quickly attacks {} before they can move!".format(p1.name,p2.name)) 
 				else:
 					p1.health -= 20
-					print("{} quickly attacks {} before they can move!".format(p1.name,p2.name)) 
+					print("{} quickly attacks {} before they can move!".format(p2.name,p1.name)) 
 			elif attack1[x] == 1: # Dodge V Dodge
 				print("Both players stare at each other waiting for the other to move!")
 			else: # Yell & Yell
@@ -178,21 +198,22 @@ class Player(object):
     confident = False
 
     # Initializer 
-    def __init__(self, name, health, actions, speed):
+    def __init__(self, name, health, actions, speed, confident):
         self.name = name
         self.health = health
         self.actions = actions
         self.speed = speed
+        self.confident = confident
 
-def make_player(name, health, actions, speed):
-    player = Player(name, health, actions, speed)
+def make_player(name, health, actions, speed, confident):
+    player = Player(name, health, actions, speed, confident)
     return player
 
 def print_player(object):
 	print("\n{} is a player".format(object.name))
 	print("Current health is {}".format(object.health))
 	print("All possible actions for current player are {}.\n".format(', '.join(object.actions)))
-	print("Does the player have speed boost? {} ".format(object.speed))
+	#print("Does the player have speed boost? {} ".format(object.speed))
 
 print ("Welcome to Ready! Flinch!! Dodge!!!\n")
 
