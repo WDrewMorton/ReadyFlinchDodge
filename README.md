@@ -1,16 +1,15 @@
 # Ready Flinch Dodge
-'
-The Ready Flinch Dodge proof of concept is complete. This game will be a mobile fighting game.
-Either:
-	1 v 1
-	2 v 2
 
-Turn based but 3 abilities at a time instead of 1
-'
+...The Ready Flinch Dodge proof of concept is complete. This game will be a mobile fighting game.
+...Either:
+.........1 v 1
+.........2 v 2
+...Turn based but 3 abilities at a time instead of 1
+
 ## Authours:
 Drew & Nick
 
-[I'm an inline-style link with title](https://trello.com/b/XXuKPzdp "Trello Ready Flinch Dodge")
+[Trello Board ReadyFlinchDodge](https://trello.com/b/XXuKPzdp "Trello Ready Flinch Dodge")
 
 ### Key:
 * TODO - action item needs to be completed for some reason
