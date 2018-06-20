@@ -48,4 +48,15 @@ Action Items going forward
 * Add AI/Tutorial
 - Run game over and over
 
-test
+05/20
+Possible modifications
+* Add Confidence check to each ability
+- Attack & Yell - Can't use same action the next round
+- Dodge 3 times consequence is 2 rounds of not being able to dodge
+* Allow a player, based on speed, the choice to swap 2nd and 3rd ability
+* Modify determination of speed
+- Determine rules for giving speed to a player
+* Remove "coin flip" as a way to determine speed
+
+* Tutorial
+- Don't include confidence consequences, but warn of issues
