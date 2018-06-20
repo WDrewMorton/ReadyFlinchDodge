@@ -10,6 +10,7 @@ Turn based but 3 abilities at a time instead of 1
 ## Authours:
 Drew & Nick
 
+[I'm an inline-style link with title](https://trello.com/b/XXuKPzdp "Trello Ready Flinch Dodge")
 
 ### Key:
 * TODO - action item needs to be completed for some reason
