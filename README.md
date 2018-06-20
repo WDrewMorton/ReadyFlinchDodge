@@ -1,10 +1,10 @@
 # Ready Flinch Dodge
 
-...The Ready Flinch Dodge proof of concept is complete. This game will be a mobile fighting game.
-...Either:
-.........1 v 1
-.........2 v 2
-...Turn based but 3 abilities at a time instead of 1
+The Ready Flinch Dodge proof of concept is complete. This game will be a mobile fighting game.
+Either:
+	1 v 1
+	2 v 2
+Turn based but 3 abilities at a time instead of 1
 
 ## Authours:
 Drew & Nick
