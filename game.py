@@ -68,8 +68,8 @@ def begin_fight(p1, p2):
 		p2Actions = choose_actions(p2)
 
 		# Checks whether a player is too confident to do nothing
-       	p1.confident = is_confident(p1Actions)
-       	p2.confident = is_confident(p2Actions)
+		p1.confident = is_confident(p1Actions)
+		p2.confident = is_confident(p2Actions)
 
 		p1AttackList = []
 		p2AttackList = []
